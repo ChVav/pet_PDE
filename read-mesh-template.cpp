@@ -68,27 +68,46 @@ void read_mesh(string filename, vector<point>& points,
     //read in lines and triangles
     int num_elements;
     fs >> num_elements;
-    //cout<< num_elements << endl;
+    //cout << num_elements << endl;
     lines.reserve(num_elements);
     triangles.reserve(num_elements);
-    /*
-    cout << "read element of type ";
+    
+    cout << "read element of type "<<endl;
+    
+    int line_count=0, triangle_count=0;
     for(int i=0;i<num_elements;i++) {
-        int id, type, unused;
-        fs >> id >> type >> unused >> unused >> unused;
-        cout << type << " ";
-
-        // TODO: check the type (either 1 for line or 2 for triangle) and
-        // populate the vectors lines and triangles.
+        //cout << "in loop: "<<i<<endl;
+        int id, type, unused1, unused2, unused3;
+        fs >> id >> type >> unused1 >> unused2 >> unused3;
+        // if the element is a line
+        if (type==1){
+            int i1, i2;
+            fs >> i1 >> i2;
+            lines[line_count]=line(i1,i2);
+            line_count+=1;
+            //cout << "line added" << endl;
+            //cout << i1 << " " << i2 << endl;
+        
+        //if the element is a triangle
+        } else if (type==2) {
+            int i1, i2, i3;
+            fs >> i1 >> i2 >> i3;
+            triangles[triangle_count]=triangle(i1,i2,i3);
+            triangle_count+=1;
+            //cout << "triangle added"<<endl;
+            //cout << i1 <<" "<<i2<<" "<<i3<< endl;
         } else {
             // read till the end of the line
+            //cout << "nothing added" << endl;
+            //cout << id <<" "<< type <<" "<<unused1 <<" "<<unused2 <<" "<<unused3<< endl;
             char c=' ';
             while( c != '\n' ) {
                 fs.get(c);
             }
         }
-    }*/
-    cout << endl;
+    }
+    lines.resize(line_count);
+    triangles.resize(triangle_count);
 }
 
 int main(int argc, char* argv[])
@@ -100,9 +119,22 @@ int main(int argc, char* argv[])
     read_mesh("square.msh", points, triangles, lines);
 
     cout << "Number of points:    " << points.size() << endl;
-    //cout << "Number of triangles: " << triangles.size() << endl;
+    cout << "Number of lines: " << lines.size() << endl;
+    cout << "Number of triangles: " << triangles.size() << endl;
     //testing
     cout << "point 15 has coordinates x: "<<points[14]._Getx()<<" and y: "<<points[14]._Gety()<<endl;
+    cout << "coordinates of point 5: " << points[4]._Getx()<<" "<<points[4]._Gety()<<endl;
+    cout << "coordinates of point 6: " << points[5]._Getx()<<" "<<points[5]._Gety()<<endl;
+    cout << "coordinates of point 7: " << points[6]._Getx()<<" "<<points[6]._Gety()<<endl;
+    cout << "line 0 has the points: " << lines[0]._GetPoint1()<<" "<<lines[0]._GetPoint2()<<endl;
+    cout << "line 1 has the points: " << lines[1]._GetPoint1()<<" "<<lines[1]._GetPoint2()<<endl;
+    cout << "triangle 0 has the points: "<<triangles[0]._GetPoint1()<<" "<<triangles[0]._GetPoint2()<<" "<<triangles[0]._GetPoint3()<<endl;
+    cout << "triangle 0 contains point 3: " <<triangles[0]._has_vertex(3)<< endl;
+    cout << "triangle 0 contains point 461: " <<triangles[0]._has_vertex(461)<< endl;
+    cout << "triangle 0 contains point 391: " <<triangles[0]._has_vertex(391)<< endl;
+    cout << "triangle 0 contains point 493: " <<triangles[0]._has_vertex(493)<< endl;
+   
+    
     // TODO: write the .vtk file
 }
 
