@@ -14,12 +14,25 @@ public:
 
 class line {
     int _i1, _i2;
-    // TODO: write functions and constructor(s)
+public:
+    line() {}
+    line(int i1, int i2): _i1(i1), _i2(i2) {}
+    int _GetPoint1() {return _i1;}
+    int _GetPoint2() {return _i2;}
 };
 
 class triangle {
     int _i1, _i2, _i3;
-    // TODO: write functions and constructor(s)
+public:
+    triangle() {}
+    triangle(int i1, int i2, int i3): _i1(i1), _i2(i2), _i3(i3) {}
+    int _GetPoint1() {return _i1;}
+    int _GetPoint2() {return _i2;}
+    int _GetPoint3() {return _i3;}
+    bool _has_vertex(int i)const {
+        if (i==_i1 || i==_i2 || i==_i3){return true;}
+        else {return false;}
+    }
 };
 
 void read_mesh(string filename, vector<point>& points,
@@ -52,9 +65,12 @@ void read_mesh(string filename, vector<point>& points,
     fs >> s;
     fs >> s;
     cout << s << " (should be $Elements)" << endl;
-
+    //read in lines and triangles
     int num_elements;
     fs >> num_elements;
+    //cout<< num_elements << endl;
+    lines.reserve(num_elements);
+    triangles.reserve(num_elements);
     /*
     cout << "read element of type ";
     for(int i=0;i<num_elements;i++) {
