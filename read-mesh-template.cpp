@@ -4,19 +4,20 @@
 using namespace std;
 
 class point {
-private:
     double _x, _y;
-    // TODO: write functions and constructor(s)
+public:
+    point() {}
+    point(double x, double y): _x(x), _y(y) {}
+    double _Getx() {return _x;}
+    double _Gety() {return _y;}
 };
 
 class line {
-private:
     int _i1, _i2;
     // TODO: write functions and constructor(s)
 };
 
 class triangle {
-private:
     int _i1, _i2, _i3;
     // TODO: write functions and constructor(s)
 };
@@ -27,18 +28,25 @@ void read_mesh(string filename, vector<point>& points,
     string s="";
 
     // read until nodes
-    while( s != "$Nodes")
+    // had to change from $Nodes to $ParametricNodes
+    while( s != "$ParametricNodes")
         fs >> s;
-
+    
     int num_nodes;
     fs >> num_nodes;
+    points.resize(num_nodes);
+    cout<<"number of nodes: "<<num_nodes<<endl;
 
     for(int i=0;i<num_nodes;i++) {
         int id;
         double x, y, unused;
         fs >> id >> x >> y >> unused;
-
-        // TODO: read data and populate the vector points
+        char c=' ';
+        while( c != '\n' ) {
+            fs.get(c);
+        }
+        // cout <<"i: "<<i<<", id "<<id<< ": x coord: "<<x<<"; y coord: "<<y<<endl;
+        points[i]=point(x,y);
     }
 
     fs >> s;
@@ -47,7 +55,7 @@ void read_mesh(string filename, vector<point>& points,
 
     int num_elements;
     fs >> num_elements;
-
+    /*
     cout << "read element of type ";
     for(int i=0;i<num_elements;i++) {
         int id, type, unused;
@@ -63,7 +71,7 @@ void read_mesh(string filename, vector<point>& points,
                 fs.get(c);
             }
         }
-    }
+    }*/
     cout << endl;
 }
 
@@ -73,11 +81,12 @@ int main(int argc, char* argv[])
     vector<point> points;
     vector<triangle> triangles;
     vector<line> lines;
-    read_mesh("test.msh", points, triangles, lines);
+    read_mesh("square.msh", points, triangles, lines);
 
     cout << "Number of points:    " << points.size() << endl;
-    cout << "Number of triangles: " << triangles.size() << endl;
-
+    //cout << "Number of triangles: " << triangles.size() << endl;
+    //testing
+    cout << "point 15 has coordinates x: "<<points[14]._Getx()<<" and y: "<<points[14]._Gety()<<endl;
     // TODO: write the .vtk file
 }
 
