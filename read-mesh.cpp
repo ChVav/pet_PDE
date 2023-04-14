@@ -1,30 +1,34 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+
 using namespace std;
 
 class point {
-    double _x, _y;
+private:
+    double _x, _y; //(x,y) coordinates of vertices in mesh
 public:
-    point() {}
+    point(){}
     point(double x, double y): _x(x), _y(y) {}
     double _Getx() {return _x;}
     double _Gety() {return _y;}
 };
 
 class line {
-    int _i1, _i2;
+private:
+    int _i1, _i2; //indices of vertices, two connecting points gives lines
 public:
-    line() {}
+    line(){}
     line(int i1, int i2): _i1(i1), _i2(i2) {}
     int _GetPoint1() {return _i1;}
     int _GetPoint2() {return _i2;}
 };
 
 class triangle {
-    int _i1, _i2, _i3;
+private:
+    int _i1, _i2, _i3; //indices of vertices, three connecting points gives triangles
 public:
-    triangle() {}
+    triangle(){}
     triangle(int i1, int i2, int i3): _i1(i1), _i2(i2), _i3(i3) {}
     int _GetPoint1() {return _i1;}
     int _GetPoint2() {return _i2;}
@@ -40,10 +44,15 @@ void read_mesh(string filename, vector<point>& points,
     ifstream fs(filename.c_str());
     string s="";
 
+    if (!fs.good()) {
+        __debugbreak();
+    }
+
     // read until nodes
     // had to change from $Nodes to $ParametricNodes
-    while( s != "$ParametricNodes")
+    while (s != "$ParametricNodes") {
         fs >> s;
+    }
     
     int num_nodes;
     fs >> num_nodes;
@@ -69,8 +78,8 @@ void read_mesh(string filename, vector<point>& points,
     int num_elements;
     fs >> num_elements;
     //cout << num_elements << endl;
-    lines.reserve(num_elements);
-    triangles.reserve(num_elements);
+    lines.resize(num_elements);
+    triangles.resize(num_elements);
     
     cout << "read element of type "<<endl;
     
@@ -135,6 +144,26 @@ int main(int argc, char* argv[])
     cout << "triangle 0 contains point 493: " <<triangles[0]._has_vertex(493)<< endl;
    
     
-    // TODO: write the .vtk file
+    // write the .vtk file
+    std::ofstream out("mesh.vtk"); // format refer to https://kitware.github.io/vtk-examples/site/VTKFileFormats/
+    out << "# vtk DataFile Version 3.0" << std::endl;// Header: file version and identifier
+    out << "Mesh" << std::endl;// Title
+    out << "ASCII" << std::endl;// Data type (file format)
+    out << "DATASET POLYDATA" << std::endl;// dataset structure, think should be polytonal data
+    out << "POINTS " << points.size() <<" float" << std::endl;
+    for (int i = 0; i < points.size(); i++) {
+        out << points[i]._Getx() << " " << points[i]._Gety() << std::endl; // write values
+    }
+    out << "LINES " << lines.size() << " " << lines.size() * 2 << std::endl;
+    for (int i = 0; i < lines.size(); i++) {
+        out << lines[i]._GetPoint1() << " " << lines[i]._GetPoint2() << std::endl; // write values
+    }
+    out << "POLYGONS " << triangles.size() << " " << triangles.size() * 3 << std::endl;
+    for (int i = 0; i < triangles.size(); i++) {
+        out << triangles[i]._GetPoint1() << " " << triangles[i]._GetPoint2() << " " << triangles[i]._GetPoint3() << std::endl; // write values
+    }
+    out.close();
+
+    return(0);
 }
 
