@@ -151,17 +151,17 @@ int main(int argc, char* argv[])
     out << "Mesh" << std::endl;// Title
     out << "ASCII" << std::endl;// Data type (file format)
     out << "DATASET POLYDATA" << std::endl;// dataset structure, think should be polytonal data
-    out << "POINTS " << points.size() <<" float" << std::endl;
+    out << "POINTS " << points.size() <<" double" << std::endl;
     for (int i = 0; i < points.size(); i++) {
         out << points[i]._Getx() << " " << points[i]._Gety() << " " << points[i]._Getz() << std::endl; // write values
     }
-    out << "LINES " << lines.size() << " " << lines.size() * 2 << std::endl;
+    out << "LINES " << lines.size() << " " << lines.size() * 3 << std::endl;
     for (int i = 0; i < lines.size(); i++) {
-        out << lines[i]._GetPoint1() << " " << lines[i]._GetPoint2() << std::endl; // write values
+        out <<"2 "<< lines[i]._GetPoint1() << " " << lines[i]._GetPoint2() << std::endl; // write values
     }
-    out << "POLYGONS " << triangles.size() << " " << triangles.size() * 3 << std::endl;
+    out << "TRIANGLE_STRIPS " << triangles.size() << " " << triangles.size() * 4 << std::endl;
     for (int i = 0; i < triangles.size(); i++) {
-        out << triangles[i]._GetPoint1() << " " << triangles[i]._GetPoint2() << " " << triangles[i]._GetPoint3() << std::endl; // write values
+        out << "3 " << triangles[i]._GetPoint1() << " " << triangles[i]._GetPoint2() << " " << triangles[i]._GetPoint3() << std::endl; // write values
     }
     out.close();
 
