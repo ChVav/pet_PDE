@@ -6,12 +6,13 @@ using namespace std;
 
 class point {
 private:
-    double _x, _y; //(x,y) coordinates of vertices in mesh
+    double _x, _y, _z; //(x,y,z) coordinates of vertices in mesh with z=0
 public:
     point(){}
-    point(double x, double y): _x(x), _y(y) {}
+    point(double x, double y, double z): _x(x), _y(y), _z(z) {}
     double _Getx() {return _x;}
     double _Gety() {return _y;}
+    double _Getz() {return _z; }
 };
 
 class line {
@@ -61,14 +62,14 @@ void read_mesh(string filename, vector<point>& points,
 
     for(int i=0;i<num_nodes;i++) {
         int id;
-        double x, y, unused;
-        fs >> id >> x >> y >> unused;
+        double x, y, z, unused;
+        fs >> id >> x >> y >> z >> unused;
         char c=' ';
         while( c != '\n' ) {
             fs.get(c);
         }
-        // cout <<"i: "<<i<<", id "<<id<< ": x coord: "<<x<<"; y coord: "<<y<<endl;
-        points[i]=point(x,y);
+        // cout <<"i: "<<i<<", id "<<id<< ": x coord: "<<x<<"; y coord: "<<y<< "; z coord: "<<z <<endl;
+        points[i]=point(x,y,z);
     }
 
     fs >> s;
@@ -152,7 +153,7 @@ int main(int argc, char* argv[])
     out << "DATASET POLYDATA" << std::endl;// dataset structure, think should be polytonal data
     out << "POINTS " << points.size() <<" float" << std::endl;
     for (int i = 0; i < points.size(); i++) {
-        out << points[i]._Getx() << " " << points[i]._Gety() << std::endl; // write values
+        out << points[i]._Getx() << " " << points[i]._Gety() << " " << points[i]._Getz() << std::endl; // write values
     }
     out << "LINES " << lines.size() << " " << lines.size() * 2 << std::endl;
     for (int i = 0; i < lines.size(); i++) {
