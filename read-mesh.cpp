@@ -93,7 +93,7 @@ void read_mesh(string filename, vector<point>& points,
         if (type==1){
             int i1, i2;
             fs >> i1 >> i2;
-            lines[line_count]=line(i1,i2);
+            lines[line_count]=line(i1-1,i2-1);
             line_count+=1;
             //cout << "line added" << endl;
             //cout << i1 << " " << i2 << endl;
@@ -102,7 +102,7 @@ void read_mesh(string filename, vector<point>& points,
         } else if (type==2) {
             int i1, i2, i3;
             fs >> i1 >> i2 >> i3;
-            triangles[triangle_count]=triangle(i1,i2,i3);
+            triangles[triangle_count]=triangle(i1-1,i2-1,i3-1);
             triangle_count+=1;
             //cout << "triangle added"<<endl;
             //cout << i1 <<" "<<i2<<" "<<i3<< endl;
