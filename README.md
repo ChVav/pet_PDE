@@ -4,7 +4,9 @@ Project assignment for the course C und C++ in der Simulationsentwicklung.
 
 Group members:
 
-Martin Fasser, Charlotte Vavourakis and Lukas Werlberger.
+Martin Fasser and Charlotte Vavourakis
+
+## Installation
 
 ## Goal
 
