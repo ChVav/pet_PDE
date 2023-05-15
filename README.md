@@ -6,7 +6,19 @@ Group members:
 
 Martin Fasser and Charlotte Vavourakis
 
-## Installation
+## Instructions
+
+* Create excecutable and run experiment (first dense implemention only)
+
+```
+mdkir build
+cd build
+cmake ..
+cmake --build .
+./PDEsolver
+```
+
+
 
 ## Goal
 
