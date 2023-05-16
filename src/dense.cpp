@@ -257,22 +257,22 @@ void output(
     string file2 = to_string(time_step);
     string file3 =".vtk";
     string filename= "data/" + file1 + file2 + file3;
-    std::ofstream out(filename); // format refer to https://kitware.github.io/vtk-examples/site/VTKFileFormats/
-    out << "# vtk DataFile Version 3.0" << std::endl;// Header: file version and identifier
-    out << "Mesh" << std::endl;// Title
-    out << "ASCII" << std::endl;// Data type (file format)
-    out << "DATASET POLYDATA" << std::endl;// dataset structure, think should be polytonal data
-    out << "POINTS " << points.size() <<" double" << std::endl;
+    ofstream out(filename); // format refer to https://kitware.github.io/vtk-examples/site/VTKFileFormats/
+    out << "# vtk DataFile Version 3.0" << endl;// Header: file version and identifier
+    out << "Mesh" << endl;// Title
+    out << "ASCII" << endl;// Data type (file format)
+    out << "DATASET POLYDATA" << endl;// dataset structure, think should be polytonal data
+    out << "POINTS " << points.size() <<" double" << endl;
     for (int i = 0; i < points.size(); i++) {
-        out << points[i].Getx() << " " << points[i].Gety() << " " << points[i].Getz() << std::endl; // write values
+        out << points[i].Getx() << " " << points[i].Gety() << " " << points[i].Getz() << endl; // write values
     }
-    out << "LINES " << lines.size() << " " << lines.size() * 3 << std::endl;
+    out << "LINES " << lines.size() << " " << lines.size() * 3 << endl;
     for (int i = 0; i < lines.size(); i++) {
-        out <<"2 "<< lines[i].GetPoint1() << " " << lines[i].GetPoint2() << std::endl; // write values
+        out <<"2 "<< lines[i].GetPoint1() << " " << lines[i].GetPoint2() << endl; // write values
     }
-    out << "TRIANGLE_STRIPS " << triangles.size() << " " << triangles.size() * 4 << std::endl;
+    out << "TRIANGLE_STRIPS " << triangles.size() << " " << triangles.size() * 4 << endl;
     for (int i = 0; i < triangles.size(); i++) {
-        out << "3 " << triangles[i].GetPoint1() << " " << triangles[i].GetPoint2() << " " << triangles[i].GetPoint3() << std::endl; // write values
+        out << "3 " << triangles[i].GetPoint1() << " " << triangles[i].GetPoint2() << " " << triangles[i].GetPoint3() << endl; // write values
     }
     //header and geometry is written
     //now write the produced data:    

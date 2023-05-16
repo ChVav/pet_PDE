@@ -1,6 +1,7 @@
 #include "dense.h"
 
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -9,7 +10,7 @@ int main() {
     vector<point> points;
     vector<triangle> triangles;
     vector<line> lines;
-    read_mesh("square.msh", points, triangles, lines);
+    read_mesh("assets/square.msh", points, triangles, lines);
 
     cout << "Number of points:    " << points.size() << endl;
     cout << "Number of lines: " << lines.size() << endl;
