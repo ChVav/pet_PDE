@@ -50,7 +50,6 @@ int main() {
             cout << "saved file " << file_count << endl;
             file_count+=1;
         }
-    }
     
     return 0;
 }

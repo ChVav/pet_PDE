@@ -6,6 +6,9 @@ project(PDEsolver)
 # Create a target, being an executable
 add_executable(PDEsolver)
 
+# Make an additional directory for storing output excecutable
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
+
 # Copy assets to output directory
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
