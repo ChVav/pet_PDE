@@ -40,16 +40,16 @@ int main() {
     int frame_count=int(end_time/dt);
     //saves 100 files in timeseries:
     int save_every=int(end_time/dt /100);
-    for (int i=0; i<frame_count; i++) {
+    for (int i = 0; i < frame_count; i++) {
         //double dt=0.01;
-        u=one_timestep(dt, B, u); //calculates one timestep
-        count+=1;
-        if (count==save_every) {
-            output(file_count/100.0, points, lines, triangles, u);
-            count=0;
+        u = one_timestep(dt, B, u); //calculates one timestep
+        count += 1;
+        if (count == save_every) {
+            output(file_count / 100.0, points, lines, triangles, u);
+            count = 0;
             cout << "saved file " << file_count << endl;
-            file_count+=1;
+            file_count += 1;
         }
-    
+    }
     return 0;
 }
