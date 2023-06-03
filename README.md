@@ -13,9 +13,10 @@ Martin Fasser and Charlotte Vavourakis
 ```
 mdkir build
 cd build
-cmake ..
+cmake .. -DCMAKE_BUILD_TYPE=Release #extra flag to avoid debug mode for the google benchmarking (significantly slower)
 cmake --build .
-./PDEsolver
+./PDEsolver # run the PDE solver
+./PDE-bench # run the benchmark
 ```
 
 

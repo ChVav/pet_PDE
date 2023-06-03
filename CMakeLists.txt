@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Specify the name of the project itself
-project(PDEsolver)
+project(PDE)
 
-# Create a target, being an executable
+# Create target executables
 add_executable(PDEsolver)
+add_executable(PDE-bench) #testing benchmarking on one function, for now benchmarking outputted to the console
 
-# Make an additional directory for storing output excecutable
+# Make an additional directory for storing output PDEsolver
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
 
 # Copy assets to output directory
@@ -15,10 +16,25 @@ add_custom_target(copy_assets
 )
 add_dependencies(PDEsolver copy_assets)
 
-# Add src as a subdirectory, meaning, include the file src/CMakeLists.txt
+# Add src and bench as a subdirectories, including contained (private) CMakeLists.txt files
 add_subdirectory(src)
+add_subdirectory(bench)
 
 target_include_directories(PDEsolver
     PRIVATE
         "src"
 )
+
+target_include_directories(PDE-bench
+	PRIVATE
+		"bench"
+)
+
+# build google benchmark (target: benchmark)
+# do not build tests of benchmarking lib
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Suppressing benchmark's test" FORCE)
+add_subdirectory(vendor/google/benchmark)
+
+# link targets to the benchmark library
+target_link_libraries("${PROJECT_NAME}-bench" benchmark)
+
