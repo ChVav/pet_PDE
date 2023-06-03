@@ -8,7 +8,7 @@ Martin Fasser and Charlotte Vavourakis
 
 ## Instructions
 
-* Create excecutable and run experiment (first dense implemention only)
+* Create excecutables and run experiment (first dense implemention only)
 
 ```
 mdkir build
