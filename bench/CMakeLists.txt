@@ -1,7 +1,10 @@
 # Specify the (private) source for the -bench executables
 
-target_sources(PDE-bench
+target_sources(PDE-dense-bench
     PRIVATE
+	# Headers
+	dense.h
+
         # Sources
-        PDE-bench.cpp
+        PDE-dense-bench.cpp
 )

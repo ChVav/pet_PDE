@@ -16,10 +16,8 @@ cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release #extra flag to avoid debug mode for the google benchmarking (significantly slower)
 cmake --build .
 ./PDEsolver # run the PDE solver
-./PDE-bench # run the benchmark
+./PDE-dense-bench # run the benchmark
 ```
-
-
 
 ## Goal
 
