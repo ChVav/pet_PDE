@@ -161,8 +161,8 @@ void compute_bc(
 	}
 	else if (i == t.GetPoint2()) {
 		p1 = points[t.GetPoint2()];
-		p2 = points[t.GetPoint1()];
-		p3 = points[t.GetPoint3()];
+		p2 = points[t.GetPoint3()];
+		p3 = points[t.GetPoint1()];
 	}
 	else if (i == t.GetPoint3()) {
 		p1 = points[t.GetPoint3()];
