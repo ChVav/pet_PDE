@@ -1,10 +1,10 @@
 # Specify the (private) sources of the PDEsolver target
-target_sources(PDEsolver
+target_sources(PDEsolver-dense
     PRIVATE
         # Headers
-        "dense.h"
+        "common.h"
 
         # Sources
+        "common.cpp"
         "dense.cpp"
-        "main.cpp"
 )

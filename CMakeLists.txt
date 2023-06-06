@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 project(PDE)
 
 # Create target executables
-add_executable(PDEsolver)
+add_executable(PDEsolver-dense)
 add_executable(PDE-dense-bench) #testing benchmarking dense implementation, for now benchmarking outputted to the console
 
 # Make an additional directory for storing output PDEsolver
@@ -14,14 +14,14 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
 )
-add_dependencies(PDEsolver copy_assets)
+add_dependencies(PDEsolver-dense copy_assets)
 add_dependencies(PDE-dense-bench copy_assets)
 
 # Add src and bench as a subdirectories, including contained (private) CMakeLists.txt files
 add_subdirectory(src)
 add_subdirectory(bench)
 
-target_include_directories(PDEsolver
+target_include_directories(PDEsolver-dense
     PRIVATE
         "src"
 )
