@@ -35,7 +35,7 @@ int main() {
 	vector<double> u = ini_state;
 	int count = 0;
 	int file_count = 1;
-	double end_time = 1000;
+	double end_time = 10000;
 	double dt = 0.1;
 	int frame_count = int(end_time / dt);
 	//saves 100 files in timeseries:
