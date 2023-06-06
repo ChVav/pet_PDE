@@ -251,7 +251,8 @@ vector<double> assemble_matrix(
 // function for setting initial conditions
 double heat(double x, double y) {
 	double width = 0.2;
-	double res = 100*exp(-pow(17.0/50-x, 2)/pow(width, 2) - pow(17.0/50-y,2)/pow(width, 2))+100*exp(-pow(33.0/50-x, 2)/pow(width, 2) - pow(33.0/50-y,2)/pow(width, 2));
+	double res = 100*(x<0.4 && y<0.4);
+	//100*exp(-pow(17.0/50-x, 2)/pow(width, 2) - pow(17.0/50-y,2)/pow(width, 2))+100*exp(-pow(33.0/50-x, 2)/pow(width, 2) - pow(33.0/50-y,2)/pow(width, 2));
 	//double res= pow(sin(x/width),2)+pow(cos(y/width),2);
 	return res;
 }
@@ -268,7 +269,7 @@ void output(
 	string file1 = "mesh_t_";
 	string file2 = to_string(time_step);
 	string file3 = ".vtk";
-	string filename = "data/2blobs_old/" + file1 + file2 + file3;
+	string filename = "data/side_rectangle/" + file1 + file2 + file3;
 	ofstream out(filename); // format refer to https://kitware.github.io/vtk-examples/site/VTKFileFormats/
 	out << "# vtk DataFile Version 3.0" << endl;// Header: file version and identifier
 	out << "Mesh" << endl;// Title
