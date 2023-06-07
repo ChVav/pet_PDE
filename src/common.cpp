@@ -161,6 +161,7 @@ bool on_boundary(int i, const vector<line>& lines) {
 double heat(double x, double y) {
 	double width = 0.2;
 	double res = 100*exp(-pow(17.0/50-x, 2)/pow(width, 2) - pow(17.0/50-y,2)/pow(width, 2))+100*exp(-pow(33.0/50-x, 2)/pow(width, 2) - pow(33.0/50-y,2)/pow(width, 2));
+	//100*exp(-pow(17.0/50-x, 2)/pow(width, 2) - pow(17.0/50-y,2)/pow(width, 2))+100*exp(-pow(33.0/50-x, 2)/pow(width, 2) - pow(33.0/50-y,2)/pow(width, 2));
 	//100*exp(-pow(25.0/50-x, 2)/pow(width, 2) - pow(25.0/50-y,2)/pow(width, 2));
 	//
 	//100*(0.4<x && x<0.6 &&  0.4<y && y<0.6);
