@@ -6,6 +6,7 @@ project(PDE)
 # Create target executables
 add_executable(PDEsolver-dense)
 add_executable(PDE-dense-bench) #testing benchmarking dense implementation, for now benchmarking outputted to the console
+add_executable(PDEsolver-sparse-man src/common.cpp src/sparse-man.cpp)
 
 # Make an additional directory for storing output PDEsolver
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
@@ -16,6 +17,7 @@ add_custom_target(copy_assets
 )
 add_dependencies(PDEsolver-dense copy_assets)
 add_dependencies(PDE-dense-bench copy_assets)
+add_dependencies(PDEsolver-sparse-man copy_assets)
 
 # Add src and bench as a subdirectories, including contained (private) CMakeLists.txt files
 add_subdirectory(src)
@@ -29,6 +31,11 @@ target_include_directories(PDEsolver-dense
 target_include_directories(PDE-dense-bench
 	PRIVATE
 		"bench"
+)
+
+target_include_directories(PDEsolver-sparse-man
+	PRIVATE
+		"src"
 )
 
 # build google benchmark (target: benchmark)
