@@ -48,6 +48,25 @@ private:
 	int _i1, _i2, _i3;
 };
 
+class sparse_mat
+{//stores sparse matrices
+public:
+	sparse_mat();
+    	sparse_mat(int, std::vector<int>, std::vector<double>);
+    	std::vector<int> _Get_pos() {
+        	return _pos;
+    	}
+    	std::vector<double> _Get_val() {
+       	 return _val;
+    	}
+    	std::vector<double> vector_mult(std::vector<double>, double);
+private:
+	int _dim;
+    	int _count;
+    	std::vector<int> _pos;
+    	std::vector<double> _val;
+};
+
 void read_mesh(std::string filename, std::vector<point>& points, std::vector<triangle>& triangles, std::vector<line>& lines);
 
 double area_triangle(point p1, point p2, point p3);
@@ -58,7 +77,7 @@ void compute_bc(int i, triangle t, const std::vector<point>& points, double& b, 
 
 bool on_boundary(int i, const std::vector<line>& lines);
 
-std::vector<double> assemble_matrix(
+sparse_mat assemble_matrix(
 	const std::vector<point>& points,
 	const std::vector<triangle>& triangles,
 	const std::vector<line>& lines,
@@ -75,5 +94,5 @@ void output(
 
 std::vector<double> one_timestep(
 	double dt,
-	const std::vector<double>& B,
+	sparse_mat& B,
 	const std::vector<double>& u_n);

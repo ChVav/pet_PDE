@@ -3,7 +3,7 @@
 should probably test assemble_matrix and forward Euler separately*/
 
 #include <benchmark/benchmark.h>
-#include "dense.h"
+#include "sparse-man.h"
 
 #include <cassert>
 #include <iostream>
@@ -193,7 +193,7 @@ void compute_bc(
 	*/
 	b = (yj - yk) / norm;
 	c = (xk - xj) / norm;
-	
+
 
 	//b = (yj - yk);
 	//c = (xk - xj);
@@ -211,8 +211,27 @@ bool on_boundary(int i, const vector<line>& lines) {
 	return false;
 }
 
+sparse_mat::sparse_mat() {}
+sparse_mat::sparse_mat(int dim, vector<int> pos, vector<double> val) {
+        _count=pos.size();
+		_dim=dim;
+		_pos=pos;
+		_val=val;
+    }
+
+
+vector<double> sparse_mat::vector_mult(vector<double> u, double dt=1) {
+    vector<double> res(u.size());
+    for (int k=0; k<_count; k++) {
+        const int i=_pos[k]/_dim;
+        const int j=_pos[k]%_dim;
+        res[i]+=dt*_val[k]*u[j];
+    }
+    return res;
+}
+
 // calculate matrix B
-vector<double> assemble_matrix(
+sparse_mat assemble_matrix(
 	const vector<point>& points,
 	const vector<triangle>& triangles,
 	const vector<line>& lines,
@@ -221,11 +240,9 @@ vector<double> assemble_matrix(
 	int n_v = points.size();
 	int n_T = triangles.size();
 
-	// set B to zero
-	vector<double> B(n_v * n_v);
-	fill(begin(B), end(B), 0.0);
-
 	// use pseudo code from finite_elements.pdf:
+	vector<int> positions;
+	vector<double> values;
 	for (int i = 0; i < n_v; i++) {
 		double H = 0;
 		for (int k = 0; k < n_T; k++) {
@@ -236,19 +253,27 @@ vector<double> assemble_matrix(
 
 		if (!on_boundary(i, lines)) {
 			for (int j = 0; j < n_v; j++) {
+				double Bij=0;
 				for (int k = 0; k < n_T; k++) {
 					if (triangles[k].has_vertex(i) && triangles[k].has_vertex(j)) {
 						double bik, bjk;
 						double cik, cjk;
 						compute_bc(i, triangles[k], points, bik, cik);
 						compute_bc(j, triangles[k], points, bjk, cjk);
-						B[j + n_v * i] -= areas[k] * (bik * bjk + cik * cjk);
+						Bij -= areas[k] * (bik * bjk + cik * cjk);
 					}
 				}
-				B[j + n_v * i] /= H;
+				if (Bij != 0) {
+					Bij /= H;
+					positions.push_back(j+n_v*i);
+					values.push_back(Bij);
+				}
 			}
 		}
 	}
+	// construct B
+	sparse_mat B;
+	B = sparse_mat(points.size(), positions, values);
 	return B;
 }
 
@@ -261,20 +286,13 @@ double heat(double x, double y) {
 }
 
 // one timestep
-vector<double> one_timestep(double dt, const vector<double>& B, const vector<double>& u_n) {
+vector<double> one_timestep(double dt, sparse_mat& B, const vector<double>& u_n) {
 	//returns u_n+1=u_n+dt*B*u_n
 	vector<double> u_n1(u_n.size());
-	for (int i = 0; i < u_n.size(); i++) {
-		u_n1[i] = u_n[i];
-		for (int j = 0; j < u_n.size(); j++) {
-			const auto index = j + i * u_n.size();
-			const auto b = B[index];
-
-			u_n1[i] += dt * b * u_n[j];
-
-			assert(!std::isinf(u_n1[i]));
-			assert(!std::isnan(u_n1[i]));
-		}
+	vector<double> delta_u(u_n.size());
+	delta_u=B.vector_mult(u_n, dt);
+	for (int i=0; i<u_n.size(); i++) {
+		u_n1[i]=delta_u[i]+u_n[i];
 	}
 	return u_n1;
 }
@@ -286,7 +304,7 @@ void pdeDense(const vector<point>& points,
 	const vector<double>& areas,
 	double dt) {
 
-	vector<double> B;
+	sparse_mat B;
 	B = assemble_matrix(points, triangles, lines, areas);
 
 	// actual time evolution:
@@ -318,7 +336,7 @@ void pdeDense(const vector<point>& points,
 //mesh is fixed
 //initial heat condition is fixed
 //begin and endtime are fixed
-static void odeDenseBench1(benchmark::State& s) {
+static void odeSparseManBench1(benchmark::State& s) {
 
 	// Vector with different time steps dt to be benchmarked
 	vector<double> steps(10);
@@ -344,7 +362,7 @@ static void odeDenseBench1(benchmark::State& s) {
 }
 
 // Register the benchmark, test a range of dt, usual input arguments are integers, here indices to the dt vector
-BENCHMARK(odeDenseBench1)->DenseRange(0, 9)->Unit(benchmark::kSecond)->Iterations(2);
+BENCHMARK(odeSparseManBench1)->DenseRange(0, 9)->Unit(benchmark::kSecond)->Iterations(2);
 
 // replaces normal main function
 BENCHMARK_MAIN();

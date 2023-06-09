@@ -58,11 +58,6 @@ void compute_bc(int i, triangle t, const std::vector<point>& points, double& b, 
 
 bool on_boundary(int i, const std::vector<line>& lines);
 
-std::vector<double> assemble_matrix(
-	const std::vector<point>& points,
-	const std::vector<triangle>& triangles,
-	const std::vector<line>& lines,
-	const std::vector<double>& areas);
 
 double heat(double x, double y);
 
