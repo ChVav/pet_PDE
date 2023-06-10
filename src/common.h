@@ -58,7 +58,6 @@ void compute_bc(int i, triangle t, const std::vector<point>& points, double& b, 
 
 bool on_boundary(int i, const std::vector<line>& lines);
 
-
 double heat(double x, double y);
 
 void output(

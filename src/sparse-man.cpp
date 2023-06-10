@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sparse-man.h"
 
 #include <cassert>
 #include <iostream>
@@ -7,90 +8,22 @@
 
 using namespace std;
 
-// calculate bc
-void compute_bc(
-	int i,
-	triangle t,
-	const vector<point>& points,
-	double& b,
-	double& c) {
-	point p1, p2, p3;
-	if (i == t.GetPoint1()) {
-		p1 = points[t.GetPoint1()];
-		p2 = points[t.GetPoint2()];
-		p3 = points[t.GetPoint3()];
-	}
-	else if (i == t.GetPoint2()) {
-		p1 = points[t.GetPoint2()];
-		p2 = points[t.GetPoint3()];
-		p3 = points[t.GetPoint1()];
-	}
-	else if (i == t.GetPoint3()) {
-		p1 = points[t.GetPoint3()];
-		p2 = points[t.GetPoint1()];
-		p3 = points[t.GetPoint2()];
-	}
-	else {
-		cout << "ERROR: vertex i is not part of triangle i" << endl;
-		exit(1);
-	}
-
-	double xi = p1.Getx(), yi = p1.Gety();
-	double xj = p2.Getx(), yj = p2.Gety();
-	double xk = p3.Getx(), yk = p3.Gety();
-
-	
-	//This is what was intended?
-	//Kind of implodes, results in Inf and nan in the final .vtk files
-	double norm = (xi * yj) - (xi * yk) - (xj * yi) + (xj * yk) + (xk * yi) - (xk * yj);
-	//cout << "norm of " << i <<" ,"<<t.GetPoint2()<<", "<<t.GetPoint3()<<" is: "<< norm << endl;
-	/*
-	assert(!std::isnan(norm));
-	assert(!std::isinf(norm));
-	assert(abs(norm - 0.0) > std::numeric_limits<double>::epsilon());
-	*/
-	b = (yj - yk) / norm;
-	c = (xk - xj) / norm;
-	
-
-	//b = (yj - yk)/(-0.001);
-	//c = (xk - xj)/(-0.001);
-}
-//definitions for sparsity
-class sparse_mat {
-    int _dim;
-    int _count;
-    vector<int> _pos;
-    vector<double> _val;
-public:
-	sparse_mat();
-    sparse_mat(int, vector<int>, vector<double>);
-    vector<int> _Get_pos() {
-        return _pos;
-    }
-    vector<double> _Get_val() {
-        return _val;
-    }
-    vector<double> vector_mult(vector<double>, double);    
-};
-
-sparse_mat::sparse_mat() {}
+sparse_mat::sparse_mat() {};
 sparse_mat::sparse_mat(int dim, vector<int> pos, vector<double> val) {
-        _count=pos.size();
-		_dim=dim;
-		_pos=pos;
-		_val=val;
-    }
+	_count = pos.size();
+	_dim = dim;
+	_pos = pos;
+	_val = val;
+}
 
-
-vector<double> sparse_mat::vector_mult(vector<double> u, double dt=1) {
-    vector<double> res(u.size());
-    for (int k=0; k<_count; k++) {
-        const int i=_pos[k]/_dim;
-        const int j=_pos[k]%_dim;
-        res[i]+=dt*_val[k]*u[j];
-    }
-    return res;
+vector<double> sparse_mat::vector_mult(vector<double> u, double dt = 1) {
+	vector<double> res(u.size());
+	for (int k = 0; k < _count; k++) {
+		const int i = _pos[k] / _dim;
+		const int j = _pos[k] % _dim;
+		res[i] += dt * _val[k] * u[j];
+	}
+	return res;
 }
 
 // calculate matrix B
@@ -103,7 +36,7 @@ sparse_mat assemble_matrix(
 	int n_v = points.size();
 	int n_T = triangles.size();
 
-	
+
 	// use pseudo code from finite_elements.pdf:
 	vector<int> positions;
 	vector<double> values;
@@ -117,7 +50,7 @@ sparse_mat assemble_matrix(
 
 		if (!on_boundary(i, lines)) {
 			for (int j = 0; j < n_v; j++) {
-				double Bij=0;
+				double Bij = 0;
 				for (int k = 0; k < n_T; k++) {
 					if (triangles[k].has_vertex(i) && triangles[k].has_vertex(j)) {
 						double bik, bjk;
@@ -129,7 +62,7 @@ sparse_mat assemble_matrix(
 				}
 				if (Bij != 0) {
 					Bij /= H;
-					positions.push_back(j+n_v*i);
+					positions.push_back(j + n_v * i);
 					values.push_back(Bij);
 				}
 			}
@@ -143,12 +76,12 @@ sparse_mat assemble_matrix(
 
 // forward Euler, calculate one timestep
 vector<double> one_timestep(double dt, sparse_mat& B, const vector<double>& u_n) {
-	//returns u_n+1=u_n+dt*B*u_n
+	//returns u_n+1 = u_n + dt * B * u_n
 	vector<double> u_n1(u_n.size());
 	vector<double> delta_u(u_n.size());
-	delta_u=B.vector_mult(u_n, dt);
-	for (int i=0; i<u_n.size(); i++) {
-		u_n1[i]=delta_u[i]+u_n[i];
+	delta_u = B.vector_mult(u_n, dt);
+	for (int i = 0; i < u_n.size(); i++) {
+		u_n1[i] = delta_u[i] + u_n[i];
 	}
 	return u_n1;
 }
@@ -178,7 +111,7 @@ int main() {
 		double x = points[i].Getx(), y = points[i].Gety();
 		ini_state[i] = heat(x, y);
 	}
-	
+
 	//write initial state into output file          
 	output(0.0, points, lines, triangles, ini_state);
 
@@ -192,7 +125,6 @@ int main() {
 	//saves 100 files in timeseries:
 	int save_every = int(end_time / dt / 100);
 	for (int i = 0; i < frame_count; i++) {
-		//double dt=0.01;
 		u = one_timestep(dt, B, u); //calculates one timestep
 		count += 1;
 		if (count == save_every) {
@@ -202,6 +134,6 @@ int main() {
 			file_count += 1;
 		}
 	}
-	
+
 	return 0;
 }

@@ -146,6 +146,44 @@ vector<double> area_triangles(const vector<point>& points, const vector<triangle
 	return areas;
 }
 
+// calculate bc
+void compute_bc(
+	int i,
+	triangle t,
+	const vector<point>& points,
+	double& b,
+	double& c) {
+	point p1, p2, p3;
+	if (i == t.GetPoint1()) {
+		p1 = points[t.GetPoint1()];
+		p2 = points[t.GetPoint2()];
+		p3 = points[t.GetPoint3()];
+	}
+	else if (i == t.GetPoint2()) {
+		p1 = points[t.GetPoint2()];
+		p2 = points[t.GetPoint3()];
+		p3 = points[t.GetPoint1()];
+	}
+	else if (i == t.GetPoint3()) {
+		p1 = points[t.GetPoint3()];
+		p2 = points[t.GetPoint1()];
+		p3 = points[t.GetPoint2()];
+	}
+	else {
+		cout << "ERROR: vertex i is not part of triangle i" << endl;
+		exit(1);
+	}
+
+	double xi = p1.Getx(), yi = p1.Gety();
+	double xj = p2.Getx(), yj = p2.Gety();
+	double xk = p3.Getx(), yk = p3.Gety();
+
+	double norm = (xi * yj) - (xi * yk) - (xj * yi) + (xj * yk) + (xk * yi) - (xk * yj);
+	
+	b = (yj - yk) / norm;
+	c = (xk - xj) / norm;
+}
+
 // check boundary
 bool on_boundary(int i, const vector<line>& lines) {
 	for (int j = 0; j < lines.size(); j++) {
