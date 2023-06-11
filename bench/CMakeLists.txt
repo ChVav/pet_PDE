@@ -3,9 +3,11 @@
 target_sources(PDE-dense-bench
     PRIVATE
 	# Headers
+	common.h
 	dense.h
 
         # Sources
+	common.cpp
         PDE-dense-bench.cpp
 )
 
