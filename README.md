@@ -8,15 +8,17 @@ Martin Fasser and Charlotte Vavourakis
 
 ## Instructions
 
-* Create excecutables and run experiment (first dense implemention only)
+* Create excecutables or run the benchmark experiment
 
 ```
 mdkir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release #extra flag to avoid debug mode for the google benchmarking (significantly slower)
+cmake .. -DCMAKE_BUILD_TYPE=Release #extra flag for Linux only, to avoid debug mode for the google benchmarking (significantly slower)
 cmake --build .
-./PDEsolver # run the PDE solver
-./PDE-dense-bench # run the benchmark
+./PDEsolver-dense # run the PDE solver, dense implementation
+./PDE-dense-bench # run the corresponding benchmark
+./PDEsolver-sparse-man # run the sparse, manual implementation
+./PDE-sparse-man-bench
 ```
 
 ## Goal
