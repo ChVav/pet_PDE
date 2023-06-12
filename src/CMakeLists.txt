@@ -20,3 +20,14 @@ target_sources(PDEsolver-sparse-man
         "common.cpp"
 	"sparse-man.cpp"
 )
+
+target_sources(PDEsolver-sparse-eigen
+    PRIVATE
+        # Headers
+	"common.h"
+        "sparse-eigen.h"
+
+        # Sources
+        "common.cpp"
+	"sparse-eigen.cpp"
+)
