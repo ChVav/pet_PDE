@@ -1,81 +1,30 @@
 #pragma once
 
+#include <common.h>
 #include <vector>
 #include <string>
 
-class point
-{ // stores (x,y,z) coordinates of vertices in mesh with z=0
+class sparse_mat { // manual implementation for sparse matrix
+
 public:
-	// getters
-	double Getx() const;
-	double Gety() const;
-	double Getz() const;
+	std::vector<double> vector_mult(std::vector<double>, double);
 
-	// constructor, can we get rid of default constructors??
-	point();
-	point(double x, double y, double z);
+	std::vector<int> _Get_pos() {
+		return _pos;
+	}
+	std::vector<double> _Get_val() {
+		return _val;
+	}
 
-private:
-	double _x, _y, _z;
-};
-
-class line
-{ //stores indices of vertices, two connecting points gives lines
-public:
-	int GetPoint1() const;
-	int GetPoint2() const;
-
-	line();
-	line(int i1, int i2);
-
-private:
-	int _i1, _i2;
-};
-
-class triangle
-{ //stores indices of vertices, three connecting points gives triangles
-public:
-	bool has_vertex(int i)const;
-
-	int GetPoint1() const;
-	int GetPoint2() const;
-	int GetPoint3() const;
-
-	triangle();
-	triangle(int i1, int i2, int i3);
-
-private:
-	int _i1, _i2, _i3;
-};
-
-class sparse_mat
-{//stores sparse matrices
-public:
 	sparse_mat();
-    	sparse_mat(int, std::vector<int>, std::vector<double>);
-    	std::vector<int> _Get_pos() {
-        	return _pos;
-    	}
-    	std::vector<double> _Get_val() {
-       	 return _val;
-    	}
-    	std::vector<double> vector_mult(std::vector<double>, double);
+	sparse_mat(int dim, std::vector<int> pos, std::vector<double> val);
+
 private:
 	int _dim;
-    	int _count;
-    	std::vector<int> _pos;
-    	std::vector<double> _val;
+	int _count;
+	std::vector<int> _pos;
+	std::vector<double> _val;
 };
-
-void read_mesh(std::string filename, std::vector<point>& points, std::vector<triangle>& triangles, std::vector<line>& lines);
-
-double area_triangle(point p1, point p2, point p3);
-
-std::vector<double> area_triangles(const std::vector<point>& points, const std::vector<triangle>& triangles);
-
-void compute_bc(int i, triangle t, const std::vector<point>& points, double& b, double& c);
-
-bool on_boundary(int i, const std::vector<line>& lines);
 
 sparse_mat assemble_matrix(
 	const std::vector<point>& points,
@@ -83,16 +32,7 @@ sparse_mat assemble_matrix(
 	const std::vector<line>& lines,
 	const std::vector<double>& areas);
 
-double heat(double x, double y);
-
-void output(
-	double time_step,
-	const std::vector<point>& points,
-	const std::vector<line>& lines,
-	const std::vector<triangle>& triangles,
-	std::vector<double>& u);
-
 std::vector<double> one_timestep(
 	double dt,
-	sparse_mat& B,
+	const sparse_mat& B,
 	const std::vector<double>& u_n);

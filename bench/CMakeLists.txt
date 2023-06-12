@@ -14,8 +14,10 @@ target_sources(PDE-dense-bench
 target_sources(PDE-sparse-man-bench
     PRIVATE
 	# Headers
+	common.h
 	sparse-man.h
 
         # Sources
+	common.cpp
         PDE-sparse-man-bench.cpp
 )

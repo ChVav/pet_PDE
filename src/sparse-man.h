@@ -1,9 +1,8 @@
 #pragma once
 
+#include "common.h"
 #include <vector>
 #include <string>
-
-#include "common.h"
 
 class sparse_mat { // manual implementation for sparse matrix
 

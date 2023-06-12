@@ -5,9 +5,9 @@ project(PDE)
 
 # Create target executables
 add_executable(PDEsolver-dense)
-add_executable(PDE-dense-bench) #testing benchmarking dense implementation, for now benchmarking outputted to the console
+add_executable(PDE-dense-bench) #benchmarking dense implementation, for now benchmarking outputted to the console
 add_executable(PDEsolver-sparse-man)
-add_executable(PDE-sparse-man-bench)
+add_executable(PDE-sparse-man-bench) #benchmarking sparse-man implementation
 
 # Make an additional directory for storing output PDEsolver
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
