@@ -45,4 +45,9 @@ $\delta_tU = BU$
 
 * This can then be solved using forward Euler:
 
-$U^{n+1} = U^n + dt B U^n$ for a given dt, $U(t_0,x,y)$ and $\Omega$. 
+$U^{n+1} = U^n + dt B U^n$ for a given dt, $U(t_0,x,y)$ and $\Omega$.
+
+## Additional task: Sparse but not scarce
+
+* Convert the PDE solver matrix (B) to sparse format and compare the performance with the dense matrix implementation
+* Use library implementation and compare with the self-implemented CSR format
