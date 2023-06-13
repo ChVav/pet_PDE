@@ -31,3 +31,14 @@ target_sources(PDEsolver-sparse-eigen
         "common.cpp"
 	"sparse-eigen.cpp"
 )
+
+target_sources(PDEsolver-sparse-csr
+    PRIVATE
+        # Headers
+	"common.h"
+        "sparse-csr.h"
+
+        # Sources
+        "common.cpp"
+	"sparse-csr.cpp"
+)

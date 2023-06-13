@@ -10,6 +10,7 @@ add_executable(PDEsolver-sparse-man)
 add_executable(PDE-sparse-man-bench) #benchmarking sparse-man implementation
 add_executable(PDEsolver-sparse-eigen)
 #add_executable(PDE-sparse-eigen-bench) #TODO
+add_executable(PDEsolver-sparse-csr)
 
 # Make an additional directory for storing output PDEsolver
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
@@ -24,6 +25,7 @@ add_dependencies(PDEsolver-sparse-man copy_assets)
 add_dependencies(PDE-sparse-man-bench copy_assets)
 add_dependencies(PDEsolver-sparse-eigen copy_assets)
 #add_dependencies(PDE-sparse-man-eigen copy_assets) #TODO
+add_dependencies(PDEsolver-sparse-csr copy_assets)
 
 # Add src and bench as a subdirectories, including contained (private) CMakeLists.txt files
 add_subdirectory(src)
@@ -49,15 +51,20 @@ target_include_directories(PDE-sparse-man-bench
 		"bench"
 )
 
+target_include_directories(PDEsolver-sparse-csr
+	PRIVATE
+		"src"
+)
+
 target_include_directories(PDEsolver-sparse-eigen
 	PRIVATE
 		"src"
 )
 
-#target_include_directories(PDE-sparse-eigen-bench
-#	PRIVATE
-#		"bench"
-#)
+target_include_directories(PDE-sparse-eigen-bench
+	PRIVATE
+		"bench"
+)
 
 
 # build google benchmark
@@ -74,6 +81,6 @@ add_subdirectory(vendor/eigen)
 
 #link targets to eigen library where needed
 target_link_libraries("${PROJECT_NAME}solver-sparse-eigen" eigen)
-#target_link_libraries("${PROJECT_NAME}-sparse-eigen-bench" eigen)
+target_link_libraries("${PROJECT_NAME}-sparse-eigen-bench" eigen)
 
 
