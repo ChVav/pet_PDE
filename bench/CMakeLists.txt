@@ -21,3 +21,14 @@ target_sources(PDE-sparse-man-bench
 	common.cpp
         PDE-sparse-man-bench.cpp
 )
+
+target_sources(PDE-sparse-csr-bench
+    PRIVATE
+	# Headers
+	common.h
+	sparse-csr.h
+
+        # Sources
+	common.cpp
+        PDE-sparse-csr-bench.cpp
+)
