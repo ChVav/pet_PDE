@@ -23,8 +23,6 @@ Eigen::SparseMatrix<double> assemble_matrix(
 	Eigen::SparseMatrix<double> B(n_v, n_v);
 
 	// use pseudo code from finite_elements.pdf:
-	vector<int> positions;
-	vector<double> values;
 	for (int i = 0; i < n_v; i++) {
 		double H = 0;
 		for (int k = 0; k < n_T; k++) {
@@ -47,9 +45,8 @@ Eigen::SparseMatrix<double> assemble_matrix(
 				}
 				if (Bij != 0) {
 					Bij /= H;
-					positions.push_back(j + n_v * i);
-					values.push_back(Bij);
-					B.insert(j + n_v, i) = Bij;
+					B.insert(i, j) = Bij;
+					B.makeCompressed();
 				}
 			}
 		}
@@ -58,9 +55,8 @@ Eigen::SparseMatrix<double> assemble_matrix(
 }
 
 // forward Euler, calculate one timestep, for first step, making a copy to standard vector format (should rewrite more off the now common functions to do this more efficiently)
-Eigen::VectorXd one_timestep(double dt, Eigen::SparseMatrix<double>& B, const Eigen::VectorXd& u_n) {
-	Eigen::VectorXd u(u_n.size());
-	auto u_n1 = u + dt * B * u;
+Eigen::VectorXd one_timestep(double dt, Eigen::SparseMatrix<double>& B, Eigen::VectorXd u_n) {
+	auto u_n1 = u_n + dt * (B * u_n);
 	return u_n1;
 }
 
@@ -70,7 +66,7 @@ void output(
 	const vector<point>& points,
 	const vector<line>& lines,
 	const vector<triangle>& triangles,
-	Eigen::VectorXd& u) {
+	Eigen::VectorXd u) {
 
 	// write the .vtk file, output is vector<double> u
 	string file1 = "mesh_t_";
@@ -95,7 +91,7 @@ void output(
 		out << "3 " << triangles[i].GetPoint1() << " " << triangles[i].GetPoint2() << " " << triangles[i].GetPoint3() << endl; // write values
 	}
 	//header and geometry is written
-	//now write the produced data:    
+	//now write the produced data:
 	out << "POINT_DATA " << points.size() << endl;
 	out << "SCALARS value double 1" << endl;
 	out << "LOOKUP_TABLE default" << endl;
@@ -106,7 +102,6 @@ void output(
 	}
 	out.close();
 }
-
 
 int main() {
 	// read data
@@ -133,11 +128,13 @@ int main() {
 		ini_state[i] = heat(x, y);
 	}
 
+	//create a pointer for initial state to share memory with an Eigen::Vector
+	Eigen::VectorXd u = Eigen::Map<Eigen::VectorXd>(ini_state.data(), ini_state.size());
+
 	//write initial state into output file
-	output(0.0, points, lines, triangles, ini_state);
+	output(0.0, points, lines, triangles, u);
 
 	//time evolution
-	Eigen::VectorXd u(ini_state.data());
 	int count = 0;
 	int file_count = 1;
 	double end_time = 0.1;
@@ -145,6 +142,7 @@ int main() {
 	int frame_count = int(end_time / dt);
 	//saves 100 files in timeseries:
 	int save_every = int(end_time / dt / 100);
+
 	for (int i = 0; i < frame_count; i++) {
 		u = one_timestep(dt, B, u); //calculates one timestep
 		count += 1;
@@ -155,6 +153,5 @@ int main() {
 			file_count += 1;
 		}
 	}
-
 	return 0;
 }

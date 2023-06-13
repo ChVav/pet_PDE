@@ -13,13 +13,13 @@ Eigen::SparseMatrix<double> assemble_matrix(
 
 Eigen::VectorXd one_timestep(
 	double dt,
-	const Eigen::SparseMatrix<double>& B,
-	const Eigen::VectorXd& u_n);
+	Eigen::SparseMatrix<double>& B,
+	Eigen::VectorXd u_n);
 
-//overload output function so that also values from Eigen::VectorXd can be written to output
+//overload output function so that also values from Eigen::Vector3d can be written to output
 void output(
 	double time_step,
 	const std::vector<point>& points,
 	const std::vector<line>& lines,
 	const std::vector<triangle>& triangles,
-	Eigen::VectorXd& u);
+	Eigen::VectorXd u);
