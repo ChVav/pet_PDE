@@ -42,10 +42,3 @@ target_sources(PDEsolver-sparse-csr
         "common.cpp"
 	"sparse-csr.cpp"
 )
-
-target_sources(test
-    PRIVATE
-
-        # Sources
-        "test.cpp"
-)

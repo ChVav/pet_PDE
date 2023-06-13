@@ -6,20 +6,33 @@ Group members:
 
 Martin Fasser and Charlotte Vavourakis
 
-## Instructions
+## Cmake instructions
 
-* Create excecutables or run the benchmark experiment
+* Total of 6 targets are built
+* Create excecutables or run the benchmark experiment (Linux): 
 
 ```
 mdkir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release #extra flag for Linux only, to avoid debug mode for the google benchmarking (significantly slower)
+cmake .. -DCMAKE_BUILD_TYPE=Release #extra flag to avoid debug mode for the google benchmarking (significantly slower)
 cmake --build .
 ./PDEsolver-dense # run the PDE solver, dense implementation
-./PDE-dense-bench # run the corresponding benchmark
-./PDEsolver-sparse-man # run the sparse, manual implementation
+./PDE-dense-bench # run the corresponding google benchmark (added as git submodule)
+./PDEsolver-sparse-man # run the sparse, manual implementation (non CSR format)
 ./PDE-sparse-man-bench
+./PDEsolver-sparse-csr # run the sparse, manual implentation CSR format
+./PDE-sparse-csr-bench
+./PDEsolver-sparse-eigen # library implementation, using Eigen (added as git submodule)
+./PDE-sparse-eigen-bench
 ```
+
+* Create excecutables or run the benchmark experiment (Windows, Visual Studio): 
+```
+mdkir build
+cd build
+cmake ..
+```
+When running benchmark in the solution, make sure to set Release mode.
 
 ## Goal
 
