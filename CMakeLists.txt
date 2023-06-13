@@ -12,7 +12,6 @@ add_executable(PDEsolver-sparse-eigen)
 #add_executable(PDE-sparse-eigen-bench) #TODO
 add_executable(PDEsolver-sparse-csr)
 add_executable(PDE-sparse-csr-bench)
-add_executable(test)
 
 # Make an additional directory for storing output PDEsolver
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
@@ -74,12 +73,6 @@ target_include_directories(PDEsolver-sparse-eigen
 #		"bench"
 #)
 
-target_include_directories(test
-	PRIVATE
-		"src"
-)
-
-
 # build google benchmark
 # do not build tests of benchmarking lib
 set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Suppressing benchmark's test" FORCE)
@@ -96,7 +89,6 @@ add_subdirectory(vendor/eigen)
 #link targets to eigen library where needed
 target_link_libraries("${PROJECT_NAME}solver-sparse-eigen" eigen)
 #target_link_libraries("${PROJECT_NAME}-sparse-eigen-bench" eigen)
-target_link_libraries(test eigen)
 
 
 
