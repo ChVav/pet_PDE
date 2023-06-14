@@ -9,7 +9,7 @@ add_executable(PDE-dense-bench) #benchmarking dense implementation, for now benc
 add_executable(PDEsolver-sparse-man)
 add_executable(PDE-sparse-man-bench) #benchmarking sparse-man implementation
 add_executable(PDEsolver-sparse-eigen)
-#add_executable(PDE-sparse-eigen-bench) #TODO
+add_executable(PDE-sparse-eigen-bench)
 add_executable(PDEsolver-sparse-csr)
 add_executable(PDE-sparse-csr-bench)
 
@@ -25,7 +25,7 @@ add_dependencies(PDE-dense-bench copy_assets)
 add_dependencies(PDEsolver-sparse-man copy_assets)
 add_dependencies(PDE-sparse-man-bench copy_assets)
 add_dependencies(PDEsolver-sparse-eigen copy_assets)
-#add_dependencies(PDE-sparse-man-eigen copy_assets) #TODO
+add_dependencies(PDE-sparse-eigen-bench copy_assets)
 add_dependencies(PDEsolver-sparse-csr copy_assets)
 add_dependencies(PDE-sparse-csr-bench copy_assets)
 
@@ -68,10 +68,10 @@ target_include_directories(PDEsolver-sparse-eigen
 		"src"
 )
 
-#target_include_directories(PDE-sparse-eigen-bench
-#	PRIVATE
-#		"bench"
-#)
+target_include_directories(PDE-sparse-eigen-bench
+	PRIVATE
+		"bench"
+)
 
 # build google benchmark
 # do not build tests of benchmarking lib
@@ -82,13 +82,15 @@ add_subdirectory(vendor/google/benchmark)
 target_link_libraries("${PROJECT_NAME}-dense-bench" benchmark)
 target_link_libraries("${PROJECT_NAME}-sparse-man-bench" benchmark)
 target_link_libraries("${PROJECT_NAME}-sparse-csr-bench" benchmark)
+target_link_libraries("${PROJECT_NAME}-sparse-eigen-bench" benchmark)
+
 
 # build eigen
 add_subdirectory(vendor/eigen)
 
 #link targets to eigen library where needed
 target_link_libraries("${PROJECT_NAME}solver-sparse-eigen" eigen)
-#target_link_libraries("${PROJECT_NAME}-sparse-eigen-bench" eigen)
+target_link_libraries("${PROJECT_NAME}-sparse-eigen-bench" eigen)
 
 
 

@@ -32,3 +32,14 @@ target_sources(PDE-sparse-csr-bench
 	common.cpp
         PDE-sparse-csr-bench.cpp
 )
+
+target_sources(PDE-sparse-eigen-bench
+    PRIVATE
+	# Headers
+	common.h
+	sparse-eigen.h
+
+        # Sources
+	common.cpp
+        PDE-sparse-eigen-bench.cpp
+)

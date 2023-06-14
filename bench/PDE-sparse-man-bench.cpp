@@ -116,8 +116,6 @@ void pdeSparseMan(const vector<point>& points,
 	int file_count = 1;
 	double end_time = 0.1;
 	int frame_count = int(end_time / dt);
-	//saves 100 files in timeseries:
-	int save_every = int(end_time / dt / 100);
 	for (int i = 0; i < frame_count; i++) {
 		//double dt=0.01;
 		u = one_timestep(dt, B, u); //calculates one timestep
@@ -175,8 +173,6 @@ static void timeEvolutionSparseManBench2(benchmark::State& s) {
 		double end_time = 0.1;
 		double dt = 0.00001;
 		int frame_count = int(end_time / dt);
-		//saves 100 files in timeseries:
-		int save_every = int(end_time / dt / 100);
 		for (int i = 0; i < frame_count; i++) {
 			u = one_timestep(dt, B, u); //calculates one timestep
 			count += 1;
