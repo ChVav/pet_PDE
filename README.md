@@ -8,7 +8,7 @@ Martin Fasser and Charlotte Vavourakis
 
 ## Cmake instructions
 
-* Total of 6 targets are built
+* Total of 8 targets are built
 * Create excecutables or run the benchmark experiment (Linux): 
 
 ```
@@ -34,7 +34,7 @@ cmake ..
 ```
 When running benchmark in the solution, make sure to set Release mode.
 
-## Goal
+## Project assignement
 
 Implement a solver for the heat equation.
 
@@ -42,7 +42,7 @@ General formula: $\frac{du}{dt} = \nabla u$ (special case, thermal diffusivity =
 
 For domain $\Omega$ in two dimensions, the Laplacian can be rewritten: $\frac{du}{dt} = \frac{d^2u}{dx^2} + \frac{d^2u}{dy^2}$
 
-## Solution
+### Solution
 
 * The problem is rewritten to a weak formulation by multiplying with a test function $\phi : \Omega \subseteq \R^2 \to \R$ and integrating over domain $\Omega$.
 
