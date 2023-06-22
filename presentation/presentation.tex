@@ -96,30 +96,6 @@
 \end{frame}
 
 %------------------------------------------------
-
-\begin{frame}{Solution: Sparse but not scarce}
-	\begin{itemize}
-		\item two self-implemented classes for sparse matrices: non-CSR and CSR format.
-	\end{itemize}
-	
-\centerline{Explain a little?}
-
-	\begin{itemize}
-		\item Eigen library:
-	\end{itemize}
-	
-\centerline{SparseMatrix class, with SparseMatrix::makeCompressed() conversion to CSR} 
-
-	\begin{itemize}
-		\item Bonus, Forward Euler written using matrix multiplication: 
-	\end{itemize}
-	
- \centerline{SparseMatrix B * VectorXd u} 
-    
-	
-\end{frame}
-
-%------------------------------------------------
 \begin{frame}{Different Sparse Formats}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 
@@ -173,10 +149,6 @@
     \end{columns}
 \end{frame}
 
-%------------------------------------------------
-\begin{frame}{Matrix assembly}
-
-\end{frame}
 %------------------------------------------------
 \begin{frame}{Conversion coo to csr}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
@@ -292,12 +264,28 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 \end{frame}
 
 %------------------------------------------------
+\begin{frame}{Solution: Sparse but not scarce}
+    \begin{itemize}
+        \item two self-implemented classes for sparse matrices: non-CSR and CSR format.
+        \item Eigen library
+        \begin{itemize}
+        	\item added to repository as a git submodule
+        	\item SparseMatrix class
+        	\item SparseMatrix::makeCompressed() conversion to CSR format
+        	\item forward Euler simplified using matrix multiplication notation: 	
+        \end{itemize}
+    \end{itemize}	
+    \centerline{Eigen::SparseMatrix B * Eigen::VectorXd u}
+\end{frame}
+
+%------------------------------------------------
+
 
 \begin{frame}{Google Benchmark}
     \begin{itemize}
         \item github.com/google/benchmark
         \item a library to benchmark code snippets (functions) 
-        \item added to to repository as a git submodule
+        \item added to repository as a git submodule
     \end{itemize}
     
     \begin{center}
@@ -321,17 +309,23 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 
 %------------------------------------------------
 
-\begin{frame}{Benchmark assembly matrix B}
-   
-   Example output
-   
+\begin{frame}{Benchmark example output}
+   \begin{center}
+   \includegraphics[width=0.8\linewidth]{example_benchmark.png}
+   \end{center}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}{Benchmark assembly matrix B}
    
-   Graph or table comparing 4 implementations
+    \begin{itemize}
+        \item 30 iterations
+    \end{itemize}
+    
+    \begin{center}
+   \includegraphics[width=0.8\linewidth]{assembly_bench_result.png}
+   \end{center}
    
 \end{frame}
 
@@ -365,100 +359,5 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 \begin{frame}
     \Huge{\centerline{Questions?}}
 \end{frame}
-
-%----------------------------------------------------------------------------------------
-
-\begin{frame}{Blocks of Highlighted Text}
-    In this slide, some important text will be \alert{highlighted} because it's important. Please, don't abuse it.
-
-    \begin{block}{Block}
-        Sample text
-    \end{block}
-
-    \begin{alertblock}{Alertblock}
-        Sample text in red box
-    \end{alertblock}
-
-    \begin{examples}
-        Sample text in green box. The title of the block is ``Examples".
-    \end{examples}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{Multiple Columns}
-    \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-        \column{.45\textwidth} % Left column and width
-        \textbf{Heading}
-        \begin{enumerate}
-            \item Statement
-            \item Explanation
-            \item Example
-        \end{enumerate}
-
-        \column{.5\textwidth} % Right column and width
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-    \end{columns}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{Table}
-    \begin{table}
-        \begin{tabular}{l l l}
-            \toprule
-            \textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2} \\
-            \midrule
-            Treatment 1         & 0.0003262           & 0.562               \\
-            Treatment 2         & 0.0015681           & 0.910               \\
-            Treatment 3         & 0.0009271           & 0.296               \\
-            \bottomrule
-        \end{tabular}
-        \caption{Table caption}
-    \end{table}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{Theorem}
-    \begin{theorem}[Mass--energy equivalence]
-        $E = mc^2$
-    \end{theorem}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{Figure}
-    Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-    %\begin{figure}
-    %\includegraphics[width=0.8\linewidth]{test}
-    %\end{figure}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-    \frametitle{Citation}
-    An example of the \verb|\cite| command to cite within the presentation:\\~
-
-    This statement requires citation \cite{p1}.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{References}
-    % Beamer does not support BibTeX so references must be inserted manually as below
-    \footnotesize{
-        \begin{thebibliography}{99}
-            \bibitem[Smith, 2012]{p1} John Smith (2012)
-            \newblock Title of the publication
-            \newblock \emph{Journal Name} 12(3), 45 -- 678.
-        \end{thebibliography}
-    }
-\end{frame}
-
-%------------------------------------------------
 
 \end{document}
