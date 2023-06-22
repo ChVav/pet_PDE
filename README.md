@@ -6,6 +6,12 @@ Group members:
 
 Martin Fasser and Charlotte Vavourakis
 
+## pull instructions (nested submodules eigen and google benchmark)
+
+```
+git submodule update --init --recursive
+```
+
 ## Cmake instructions
 
 * Total of 8 targets are built
