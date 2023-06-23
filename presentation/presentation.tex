@@ -150,6 +150,11 @@
 \end{frame}
 
 %------------------------------------------------
+\begin{frame}{Matrix assembly}
+
+\end{frame}
+
+%------------------------------------------------
 \begin{frame}{Conversion coo to csr}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 
@@ -349,8 +354,23 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 
 \begin{frame}{Conclusions}
    \begin{itemize}
-	  \item Using the sparse format for B resulted in a 10-fold time speed up
+      \item Trade off own dense vs sparse format:
+   	 \begin{itemize}
+   	  \item With the dense format and increasing mesh size, will run out of memory far sooner 
+	  \item Time needed for matrix assembly unpredictable (dependence on format and machine used)
+	  \item Significant 100-fold time-speed up using sparse format for time evolution
+     \end{itemize}
+   	 \item Trade off own sparse format vs CSR-format:
+   	 \begin{itemize}
+	  \item Extra time needed for converting COO to CSR 
+	  \item Speed up at time evolution
+	  
+	  \end{itemize}
+	  \item Trade-off library vs own implementation:
+	  \begin{itemize}
+	  \item Time spent on learning the library (once) vs on correctly implementing the sparse format
 	  \item With Eigen even more speed up and code simplification using matrix product expressions
+	  \end{itemize}
    \end{itemize}
 \end{frame}
 
