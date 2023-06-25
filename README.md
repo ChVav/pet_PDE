@@ -23,13 +23,13 @@ cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release #extra flag to avoid debug mode for the google benchmarking (significantly slower)
 cmake --build .
 ./PDEsolver-dense # run the PDE solver, dense implementation
-./PDE-dense-bench # run the corresponding google benchmark (added as git submodule)
+./PDE-dense-bench --benchmark_format=json --benchmark_out="result-bench-dense.json" # run the corresponding google benchmark (added as git submodule)
 ./PDEsolver-sparse-man # run the sparse, manual implementation (non CSR format)
-./PDE-sparse-man-bench
+./PDE-sparse-man-bench --benchmark_format=json --benchmark_out="result-bench-sparse-man.json"
 ./PDEsolver-sparse-csr # run the sparse, manual implentation CSR format
-./PDE-sparse-csr-bench
+./PDE-sparse-csr-bench --benchmark_format=json --benchmark_out=""result-bench-sparse-csr.json
 ./PDEsolver-sparse-eigen # library implementation, using Eigen (added as git submodule)
-./PDE-sparse-eigen-bench
+./PDE-sparse-eigen-bench --benchmark_format=json --benchmark_out=""result-bench-sparse-eigen.json
 ```
 
 * Create excecutables or run the benchmark experiment (Windows, Visual Studio): 

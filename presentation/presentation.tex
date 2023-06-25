@@ -338,15 +338,27 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 
 \begin{frame}{Benchmark time evolution}
    
-   Graph or table comparing 4 implementations
+    \begin{itemize}
+        \item 30 iterations
+    \end{itemize}
+    
+    \begin{center}
+   \includegraphics[width=0.8\linewidth]{timeevolution_bench_result.png}
+   \end{center}
    
 \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}{Benchmark assembly B + time evolution for different dt }
+\begin{frame}{Benchmark time evolution}
    
-   Graph or table comparing 4 implementations
+    \begin{itemize}
+        \item 2 iterations, for different timesteps (dt)
+    \end{itemize}
+    
+    \begin{center}
+   \includegraphics[width=0.9\linewidth]{ode_bench_result.png}
+   \end{center}
    
 \end{frame}
 
@@ -354,10 +366,10 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 
 \begin{frame}{Conclusions}
    \begin{itemize}
-      \item Trade off own dense vs sparse format:
+      \item Sparse formats preferred over dense format:
    	 \begin{itemize}
-   	  \item With the dense format and increasing mesh size, will run out of memory far sooner 
-	  \item Time needed for matrix assembly unpredictable (dependence on format and machine used)
+   	  \item Memory issues for large mesh sizes
+	  \item Time needed for matrix assembly similar (dependence on machine used?)
 	  \item Significant 100-fold time-speed up using sparse format for time evolution
      \end{itemize}
    	 \item Trade off own sparse format vs CSR-format:
@@ -369,7 +381,7 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 	  \item Trade-off library vs own implementation:
 	  \begin{itemize}
 	  \item Time spent on learning the library (once) vs on correctly implementing the sparse format
-	  \item With Eigen even more speed up and code simplification using matrix product expressions
+	  \item With Eigen code simplification using matrix product expressions
 	  \end{itemize}
    \end{itemize}
 \end{frame}
