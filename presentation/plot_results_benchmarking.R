@@ -96,7 +96,7 @@ result2 <- result %>%
   filter(grepl('Bench3', name)) %>%
   separate(name, sep="/", into = c("name", "dt_index", "iterations"), remove=TRUE)
 timesteps <- data.frame(dt_index = as.character(seq(1:10)-1),
-                        dt = paste0("dt=",seq(1:10)/0.00001))
+                        dt = paste0("dt=",format(seq(10:1)*0.00001, scientific=FALSE)))
 result2 <- full_join(result2,timesteps)
 result2$name <- gsub("Bench.*","",result2$name)
 result2$name <- gsub("ode*","",result2$name)
@@ -106,7 +106,7 @@ result2 <- result2 %>% #make long format
                values_to="time")
 result2$type <- factor(result2$type, levels=c("real_time","cpu_time"))
 result2$name <- factor(result2$name, levels=c("Dense","SparseMan","SparseCsr","SparseEigen"))
-result2$dt <-factor(result2$dt, levels=paste0("dt=",seq(1:10)/0.00001))
+result2$dt <-factor(result2$dt, levels=paste0("dt=",format(seq(1:10)*0.00001, scientific=FALSE)))
 
 plot <- result2 %>% 
   ggplot(aes(x=OS, 
@@ -134,4 +134,20 @@ plot <- result2 %>%
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1))
 
 ggsave(plot, file="ode_bench_result.png", width=18.5, height=8.5, units="cm")
+
+plot <- result2 %>%
+  filter(type=="real_time") %>%
+  filter(OS=="Linux") %>%
+  droplevels() %>%
+  ggplot(aes(x=dt, 
+             y=time,
+             fill=name)) +
+  geom_bar(stat="identity", position="dodge")+
+  scale_fill_carto_d(palette = "Earth") +
+  theme_bw()+
+  labs(fill="",x="",y="Time [s]") +
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1))
+
+ggsave(plot, file="ode_bench_result2.png", width=15, height=6.5, units="cm")
+  
 
