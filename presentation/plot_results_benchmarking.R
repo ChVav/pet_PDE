@@ -84,7 +84,7 @@ plot <- result2 %>%
              y=time,
              fill=name)) +
   geom_bar(stat="identity", position="dodge")+
-  scale_fill_manual(values=c(cols$fill)[2:4]) +
+  scale_fill_manual(values=c(c(cols$fill)[4],c(cols$fill)[2],c(cols$fill)[3])) +
   facet_wrap(~type) +
   theme_bw()+
   labs(fill="",x="",y="Time [ms]")
@@ -130,7 +130,8 @@ plot <- result2 %>%
   scale_fill_carto_d(palette = "Earth") +
   facet_wrap(~type + dt,nrow=2) +
   theme_bw()+
-  labs(fill="",x="",y="Time [s]")
+  labs(fill="",x="",y="Time [s]") +
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust=1))
 
 ggsave(plot, file="ode_bench_result.png", width=18.5, height=8.5, units="cm")
 
