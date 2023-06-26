@@ -18,7 +18,7 @@
 \title[short title]{Numeric simulation using finite elements}
 \subtitle{Sparse but not scarce}
 
-\author {Charlotte Vavourakis, Martin Fasser}
+\author {Martin Fasser, Charlotte Vavourakis}
 \institute[UIBK] % Your institution may be shorthand to save space
 {
     % Your institution for the title page
@@ -357,10 +357,25 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
    
     \begin{itemize}
         \item 30 iterations
+        \item Linux (Martin's machine), Windows and WSL (Charlotte's machine)
     \end{itemize}
     
     \begin{center}
    \includegraphics[width=0.8\linewidth]{assembly_bench_result.png}
+   \end{center}
+   
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Benchmark time evolution}
+   
+    \begin{itemize}
+        \item 30 iterations
+    \end{itemize}
+    
+    \begin{center}
+   \includegraphics[width=0.8\linewidth]{timeevolution_bench_result2.png}
    \end{center}
    
 \end{frame}
@@ -388,7 +403,7 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
     \end{itemize}
     
     \begin{center}
-   \includegraphics[width=0.9\linewidth]{ode_bench_result.png}
+   \includegraphics[width=1\linewidth]{ode_bench_result.png}
    \end{center}
    
 \end{frame}
@@ -400,16 +415,16 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
       \item Sparse formats preferred over dense format:
    	 \begin{itemize}
    	  \item Memory issues for large mesh sizes
-	  \item Time needed for matrix assembly similar (dependence on machine used?)
+	  \item Time needed for matrix assembly similar (dependence on machine and OS used?)
 	  \item Significant 100-fold time-speed up using sparse format for time evolution
      \end{itemize}
-   	 \item Trade off own sparse format vs CSR-format:
+   	 \item Tradeoff own sparse format vs CSR-format:
    	 \begin{itemize}
 	  \item Extra time needed for converting COO to CSR 
 	  \item Speed up at time evolution
 	  
 	  \end{itemize}
-	  \item Trade-off library vs own implementation:
+	  \item Tradeoff library vs own implementation:
 	  \begin{itemize}
 	  \item Time spent on learning the library (once) vs on correctly implementing the sparse format
 	  \item With Eigen code simplification using matrix product expressions

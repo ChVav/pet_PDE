@@ -74,6 +74,23 @@ plot <- result2 %>%
 
 ggsave(plot, file="timeevolution_bench_result.png", width=15, height=6.5, units="cm")
 
+# plot also without the dense benchmark to zoom in on the sparce benchmarks
+g <- ggplot_build(plot)
+cols <- unique(g$data[[1]]["fill"]) #get colors from previous plot
+plot <- result2 %>% 
+  filter(!name == "Dense") %>%
+  droplevels() %>%
+  ggplot(aes(x=OS, 
+             y=time,
+             fill=name)) +
+  geom_bar(stat="identity", position="dodge")+
+  scale_fill_manual(values=c(cols$fill)[2:4]) +
+  facet_wrap(~type) +
+  theme_bw()+
+  labs(fill="",x="",y="Time [ms]")
+
+ggsave(plot, file="timeevolution_bench_result2.png", width=15, height=6.5, units="cm")
+
 # plot assembly+full time evolution #----
 result2 <- result %>% 
   filter(grepl('Bench3', name)) %>%
@@ -115,5 +132,5 @@ plot <- result2 %>%
   theme_bw()+
   labs(fill="",x="",y="Time [s]")
 
-ggsave(plot, file="ode_bench_result.png", width=18, height=8.5, units="cm")
+ggsave(plot, file="ode_bench_result.png", width=18.5, height=8.5, units="cm")
 
