@@ -60,6 +60,17 @@
 \end{frame}
 
 %------------------------------------------------
+
+\begin{frame}{Assignment: Sparse but not scarce}
+	\begin{itemize}
+	    \item Convert PDE solver matrix to sparse format and compare the performance with your
+	dense matrix implementation.
+		\item Use library implementation and compare it with a self-implemented CSR format.
+
+	\end{itemize}
+\end{frame}
+
+%------------------------------------------------
 \begin{frame}{Why Sparse?}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 
@@ -84,16 +95,7 @@
     \end{columns}
 \end{frame}
 
-%------------------------------------------------
 
-\begin{frame}{Assignment: Sparse but not scarce}
-	\begin{itemize}
-	    \item Convert PDE solver matrix to sparse format and compare the performance with your
-	dense matrix implementation.
-		\item Use library implementation and compare it with a self-implemented CSR format.
-
-	\end{itemize}
-\end{frame}
 
 %------------------------------------------------
 \begin{frame}{Different Sparse Formats}
@@ -111,7 +113,7 @@
 		1, & 4, & 5, & 7, & 9, & 18, & 20 
 		\end{bmatrix}$
 	\end{itemize}
-\item sparse - coo (coordinate list)
+\item sparse - COO (coordinate list)
 	\begin{itemize}
 		\item $\mathrm{values} = \begin{bmatrix}
 		5.3, & 1.5, & 4.2, & 3.1, & 2, & 2.2, & 1.9 
@@ -123,7 +125,7 @@
 		0, & 0, & 1, & 1, & 1, & 3, & 4 
 		\end{bmatrix}$
 	\end{itemize}
-\item sparse - csr (compressed row storage)
+\item sparse - CSR (compressed row storage)
 	\begin{itemize}
        \item $\mathrm{values} = \begin{bmatrix}
 		5.3, & 1.5, & 4.2, & 3.1, & 2, & 2.2, & 1.9 
@@ -186,11 +188,11 @@ constructing the $\mathrm{sparse\_mat}$ object: \\
 \end{frame}
 
 %------------------------------------------------
-\begin{frame}{Matrix assembly: Conversion coo to csr}
+\begin{frame}{Matrix assembly: Conversion COO to CSR}
     \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 
 \column{.65\textwidth} % Left column and width
-coo format: \\
+COO format: \\
 $\mathrm{row\_ind} = \begin{bmatrix}
 		0, & 0, & 1, & 1, & 1, & 3, & 4 
 		\end{bmatrix}$
@@ -208,7 +210,7 @@ $\mathrm{row\_step} = \begin{bmatrix}
     \includegraphics[width=0.7\linewidth]{conversion2.png}
     \end{center}
 
-csr format: \\
+CSR format: \\
 $\mathrm{row\_ptr} = \begin{bmatrix}
 		0, & 2, & 5, & 5, & 6, & 7 
 		\end{bmatrix}$
@@ -269,7 +271,7 @@ $\mathrm{row\_ptr} = \begin{bmatrix}
 
 \column{.65\textwidth} % Left column and width
 \begin{itemize}
-\item sparse - csr (compressed row storage)
+\item sparse - CSR (compressed row storage)
 	\begin{itemize}
        \item $\mathrm{values} = \begin{bmatrix}
 		5.3, & 1.5, & 4.2, & 3.1, & 2, & 2.2, & 1.9 
