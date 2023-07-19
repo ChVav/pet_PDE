@@ -58,23 +58,34 @@ sparse_mat assemble_matrix(
 	int n_T = triangles.size();
 
 
-	// use pseudo code from finite_elements.pdf:
-	vector<int> col_ind;
-	vector<int> row_ind;
-	vector<double> values;
-	for (int i = 0; i < n_v; i++) {
-		double H = 0;
-		for (int k = 0; k < n_T; k++) {
+	//testing matrix assembly
+	vector<vector<int>> triangle_info(points.size());
+	
+	for (int i=0; i<points.size(); i++) {
+		int count=0;
+		for (int k=0; k<triangles.size(); k++) {
 			if (triangles[k].has_vertex(i)) {
-				H += areas[k];
+				triangle_info[i].push_back(k);
+				count+=1;
 			}
 		}
-
+	}
+	// use pseudo code from finite_elements.pdf:
+	vector<int> col_ind(6*points.size());
+	vector<int> row_ind(6*points.size());
+	vector<double> values(6*points.size());
+	int count=0;
+	for (int i = 0; i < n_v; i++) {
+		double H = 0;
+		for (int tricount=0; tricount<triangle_info[i].size(); tricount++) {
+			H+=areas[triangle_info[i][tricount]];
+		}
 		if (!on_boundary(i, lines)) {
 			for (int j = 0; j < n_v; j++) {
 				double Bij = 0;
-				for (int k = 0; k < n_T; k++) {
-					if (triangles[k].has_vertex(i) && triangles[k].has_vertex(j)) {
+				for (int tricount=0; tricount<triangle_info[i].size(); tricount++) {
+					int k=triangle_info[i][tricount];
+					if (triangles[k].has_vertex(j)) {
 						double bik, bjk;
 						double cik, cjk;
 						compute_bc(i, triangles[k], points, bik, cik);
@@ -84,13 +95,17 @@ sparse_mat assemble_matrix(
 				}
 				if (Bij != 0) {
 					Bij /= H;
-					row_ind.push_back(i);
-					col_ind.push_back(j);
-					values.push_back(Bij);
+					row_ind[count]=i;
+					col_ind[count]=j;
+					values[count]=Bij;
+					count+=1;
 				}
 			}
 		}
 	}
+	row_ind.resize(count);
+	col_ind.resize(count);
+	values.resize(count);
 	// construct B
 	sparse_mat B;
 	B = sparse_mat(points.size(), col_ind, row_ind, values);
